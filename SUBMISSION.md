@@ -1,7 +1,7 @@
 # Submission: Ajaia Docs
 
 **Live product:** https://ajaia-docs-app-42xl.onrender.com
-**Walkthrough video:** `<PASTE YOUR VIDEO LINK HERE>`
+**Walkthrough video:** https://www.loom.com/share/f628da6d52ae4456a8bf134c152372c9
 **Source:** this Google Drive folder (`ajaia-docs/`)
 
 ## Test accounts

@@ -23,6 +23,7 @@ These are concrete corrections made during the build, not hypotheticals:
 * **Autosave reading from a destroyed editor.** The first version of `save()` called `editor.getHTML()` at save time. Because unsaved work is also flushed when the editor page unmounts, that call could run after Tiptap had destroyed the editor. The save pipeline was changed to read from a ref updated on every content change.
 * **Circular import.** `navigate()` was first exported from `App.jsx` and imported by `Dashboard.jsx`, which App imports. It was moved to `nav.js`.
 * **Non portable start script.** `NODE_ENV=production node ...` in `npm start` would fail on Windows. `NODE_ENV` moved into the Render config instead.
+* **Conflict warning that disappeared.** While testing the live site, a stale save was correctly rejected, but if the user kept typing, the status update replaced the conflict warning with "Unsaved changes" and hid it. The automated browser test typed too fast to catch this. The fix keeps the warning visible until the user reloads.
 * **Tests that failed only on Windows.** The generated test cleanup deleted each temporary database folder without closing the SQLite connection first. That passed on Linux, but on my Windows machine all 11 tests failed with `EPERM` because Windows will not delete an open file. The fix closes the database before deleting and never fails a test over leftover temp files.
 * **Convoluted test code.** One generated assertion built a user ID with a confusing `a && b` expression. It was rewritten as two plain lines.
 * **Screenshots that hid the UI.** The first editor screenshot was scrolled past the title, status and Share button, so it did not show the feature it was meant to show. The script was changed to scroll to the top first, and all screenshots were retaken on a fresh database (the first set also had duplicate documents from repeated runs).
@@ -41,3 +42,4 @@ These are concrete corrections made during the build, not hypotheticals:
 * Tested the app locally: created a document, renamed it, applied bold formatting, refreshed, and confirmed everything persisted.
 * Deployed to Render with a Turso database, then checked in the Turso dashboard that the users, documents and document_shares tables were created and seeded.
 * Tested sharing on the live site in a private window as Carol and confirmed the shared document is read only with no toolbar.
+* Tested the save conflict by hand with Alice and Bob on the live site, found the disappearing warning bug, fixed it, redeployed, and confirmed the warning stays visible.
