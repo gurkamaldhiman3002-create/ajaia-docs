@@ -1,6 +1,6 @@
 # Submission: Ajaia Docs
 
-**Live product:** `<PASTE YOUR DEPLOYED URL HERE>`
+**Live product:** https://ajaia-docs-app-42xl.onrender.com
 **Walkthrough video:** `<PASTE YOUR VIDEO LINK HERE>`
 **Source:** this Google Drive folder (`ajaia-docs/`)
 

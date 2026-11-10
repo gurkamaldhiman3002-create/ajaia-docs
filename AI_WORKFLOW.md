@@ -23,6 +23,7 @@ These are concrete corrections made during the build, not hypotheticals:
 * **Autosave reading from a destroyed editor.** The first version of `save()` called `editor.getHTML()` at save time. Because unsaved work is also flushed when the editor page unmounts, that call could run after Tiptap had destroyed the editor. The save pipeline was changed to read from a ref updated on every content change.
 * **Circular import.** `navigate()` was first exported from `App.jsx` and imported by `Dashboard.jsx`, which App imports. It was moved to `nav.js`.
 * **Non portable start script.** `NODE_ENV=production node ...` in `npm start` would fail on Windows. `NODE_ENV` moved into the Render config instead.
+* **Tests that failed only on Windows.** The generated test cleanup deleted each temporary database folder without closing the SQLite connection first. That passed on Linux, but on my Windows machine all 11 tests failed with `EPERM` because Windows will not delete an open file. The fix closes the database before deleting and never fails a test over leftover temp files.
 * **Convoluted test code.** One generated assertion built a user ID with a confusing `a && b` expression. It was rewritten as two plain lines.
 * **Screenshots that hid the UI.** The first editor screenshot was scrolled past the title, status and Share button, so it did not show the feature it was meant to show. The script was changed to scroll to the top first, and all screenshots were retaken on a fresh database (the first set also had duplicate documents from repeated runs).
 * **Design choices kept on purpose over simpler AI defaults:** 404 instead of 403 for documents you cannot access, optimistic version checks instead of last write wins, and server side sanitizing instead of trusting the editor's output.
@@ -36,4 +37,7 @@ These are concrete corrections made during the build, not hypotheticals:
 
 ## My own review
 
-<!-- Replace this with what you personally checked, changed, or decided. For example: which flows you clicked through on the live deployment, anything you rewrote, and any decision you would defend in the interview. -->
+* Ran the test suite on my own Windows machine, found that all 11 tests failed during cleanup, and had the cleanup fixed before deploying.
+* Tested the app locally: created a document, renamed it, applied bold formatting, refreshed, and confirmed everything persisted.
+* Deployed to Render with a Turso database, then checked in the Turso dashboard that the users, documents and document_shares tables were created and seeded.
+* Tested sharing on the live site in a private window as Carol and confirmed the shared document is read only with no toolbar.
