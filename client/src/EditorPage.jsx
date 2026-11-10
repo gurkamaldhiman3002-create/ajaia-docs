@@ -82,6 +82,7 @@ export default function EditorPage({ docId }) {
 
   const markDirty = useCallback(() => {
     dirtyRef.current = true;
+    if (blockedRef.current) return; // keep the conflict banner visible until the user reloads
     setStatus('unsaved');
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(save, AUTOSAVE_MS);
